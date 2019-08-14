@@ -8,9 +8,18 @@ rm -rf slides && mkdir -p slides/svg slides/png
 
 cat "2019:Program.txt" | while read -r talk; do
   title=$(echo -n "$talk" | cut -f1)
+
+  # File name tweaks : remove slash, 100 characters maximum
   fileName=${title/\//-}
+  fileName=${fileName:0:100}
+
+  # Title tweak : escape ampersand
+  title=${title/&/\\&}
+
   titleLength=${#title}
+
   speakers=$(echo -n "$talk" | cut -f2)
+
   cp "Wikimania video - Title slide.svg" "slides/svg/$fileName - front slide.svg"
   sed -i "s#Title#$title#" "slides/svg/$fileName - front slide.svg"
   sed -i "s#Speaker names, and names#$speakers#" "slides/svg/$fileName - front slide.svg"
